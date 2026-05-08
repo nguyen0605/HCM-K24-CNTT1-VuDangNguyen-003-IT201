@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form khóa học</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h1>Form khóa học</h1>
+<form th:action="${course.id == null} ? @{/courses/save} : @{/courses/update}" th:object="${course}" method="post">
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label>ID:</label>
+        <input type="number" th:field="*{id}">
+        <span class="error" th:errors="*{id}"></span>
+    </div>
+
+    <div>thumbnail3wt4
+        <label>CourseName:</label>
+        <input type="text" th:field="*{courseName}">
+        <span class="error" th:errors="*{courseName}"></span>
+    </div>
+
+    <div>
+        <label>Instructor:</label>
+        <input type="text" th:field="*{instructor}">
+        <span class="error" th:errors="*{instructor}"></span>
+    </div>
+
+    <div>
+        <label>Duration:</label>
+        <input type="number" th:field="*{duration}">
+        <span class="error" th:errors="*{duration}"></span>
+    </div>
+
+    <div>
+        <label>Thumbnail:</label>
+        <textarea th:field="*{thumbnail}"></textarea>
+        <span class="error" th:errors="*{thumbnail}"></span>
+    </div>
+
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
+</html>
