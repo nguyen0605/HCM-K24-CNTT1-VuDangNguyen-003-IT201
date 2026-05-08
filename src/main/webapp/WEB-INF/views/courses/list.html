@@ -1,39 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Danh sách khóa học</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        img {
+            width: 80px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        form {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
+
 <h1>Danh sách khóa học</h1>
+
 <form th:action="@{/courses}" method="get">
-    <input type="text" name="keyword" placeholder="Tìm kiếm..." th:value="${keyword}">
-    <button type="submit">Tìm</button>
+    <input type="text" name="keyword" placeholder="Tìm theo tên khóa học hoặc giảng viên"
+           th:value="${keyword}">
+    <button type="submit">Tìm kiếm</button>
 </form>
 
-<a th:href="@{/courses/create}">Thêm mới</a>
+<a th:href="@{/courses/create}">Thêm khóa học</a>
 
-<table border="1">
+<table>
     <tr>
         <th>STT</th>
-        <th>CourseName</th>
-        <th>Instructor</th>
-        <th>Duration</th>
-        <th>Thumbnail</th>
-        <th>Hành động</th>
+        <th>Ảnh</th>
+        <th>Tên khóa học</th>
+        <th>Giảng viên</th>
+        <th>Thời lượng</th>
+        <th>Thao tác</th>
     </tr>
 
     <tr th:if="${#lists.isEmpty(courses)}">
-        <td colspan="6">Chưa có khóa học nào trong hệ thống.</td>
+        <td colspan="6">Chưa có khóa học nào trong hệ thống</td>
     </tr>
 
-    <tr th:each="c, stat : ${courses}">
+    <tr th:each="course, stat : ${courses}">
         <td th:text="${stat.count}"></td>
-        <td th:text="${c.courseName}"></td>
-        <td th:text="${c.instructor}"></td>
-        <td th:text="${c.duration}"></td>
-        <td th:text="${c.thumbnail}"></td>
-        <td></td>
+
+        <td>
+            <img th:if="${course.thumbnail != null}"
+                 th:src="@{'/uploads/' + ${course.thumbnail}}">
+
+            <img th:if="${course.thumbnail == null}"
+                 th:src="@{/images/default-course.png}">
+        </td>
+
+        <td th:text="${course.courseName}"></td>
+        <td th:text="${course.instructor}"></td>
+        <td th:text="${course.duration + ' giờ'}"></td>
+
+        <td>
+            <a th:href="@{/courses/edit/{id}(id=${course.id})}">Sửa</a>
+
+            <a th:href="@{/courses/delete/{id}(id=${course.id})}"
+               onclick="return confirm('Bạn có chắc muốn xóa khóa học này?')">
+                Xóa
+            </a>
+        </td>
     </tr>
 </table>
 

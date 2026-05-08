@@ -1,51 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Form khóa học</title>
+
     <style>
+        div {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: inline-block;
+            width: 130px;
+        }
+
         .error {
             color: red;
+            display: block;
+            margin-left: 135px;
+        }
+
+        img {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
-<h1>Form khóa học</h1>
-<form th:action="${course.id == null} ? @{/courses/save} : @{/courses/update}" th:object="${course}" method="post">
+
+<h1 th:text="${course.id == null} ? 'Thêm khóa học' : 'Cập nhật khóa học'"></h1>
+
+<form th:action="${course.id == null} ? @{/courses/save} : @{/courses/update}"
+      th:object="${course}"
+      method="post"
+      enctype="multipart/form-data">
+
     <input type="hidden" th:field="*{id}">
 
     <div>
-        <label>ID:</label>
-        <input type="number" th:field="*{id}">
-        <span class="error" th:errors="*{id}"></span>
-    </div>
-
-    <div>thumbnail3wt4
-        <label>CourseName:</label>
+        <label>Tên khóa học:</label>
         <input type="text" th:field="*{courseName}">
         <span class="error" th:errors="*{courseName}"></span>
     </div>
 
     <div>
-        <label>Instructor:</label>
+        <label>Giảng viên:</label>
         <input type="text" th:field="*{instructor}">
         <span class="error" th:errors="*{instructor}"></span>
     </div>
 
     <div>
-        <label>Duration:</label>
+        <label>Thời lượng:</label>
         <input type="number" th:field="*{duration}">
         <span class="error" th:errors="*{duration}"></span>
     </div>
 
     <div>
-        <label>Thumbnail:</label>
-        <textarea th:field="*{thumbnail}"></textarea>
-        <span class="error" th:errors="*{thumbnail}"></span>
+        <label>Ảnh hiện tại:</label>
+
+        <img th:if="${course.thumbnail != null}"
+             th:src="@{'/uploads/' + ${course.thumbnail}}">
+
+        <img th:if="${course.thumbnail == null}"
+             th:src="@{/images/default-course.png}">
     </div>
 
-    <button type="submit">Save</button>
+    <div>
+        <label>Upload ảnh:</label>
+        <input type="file" name="imageFile" accept=".jpg,.png">
+    </div>
+
+    <button type="submit">Lưu</button>
+    <a th:href="@{/courses}">Quay lại</a>
+
 </form>
+
 </body>
-</html>
 </html>
